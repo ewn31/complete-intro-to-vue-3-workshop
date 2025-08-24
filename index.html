@@ -9,15 +9,22 @@
   <body>
     <div id="app">
       <h1>{{ showTitle }}</h1>
-      <p>Released: <i>{{firstAired}}</i>, Still Running: {{ stillRunning ? "Yes" : "No" }} </p>
+      <p>Released: <i>{{firstAired}}</i>, Still Running: {{ stillRunning ? "Yes" : "No" }}, Number of Seasons: {{ numberOfSeasons }}</p>
       <h2>Synopsis</h2>
       <p>{{ synopsis }}</p>
       <p><b>Genre: </b> <span v-for="topic in genre"> <i>{{ topic + " " }}</i> </span> </p>
       <h2>Characters</h2>
+      <input type="text" v-model="newCharacter">
+      <button v-on:click="addCharacter()">Add Character</button>
       <ul v-if="characters.length > 0">
-        <li v-for="character in characters">{{ character }}</li>
+        <li v-for="character in characters">{{ character }} <button @click="addToFavouriteList(character)">Add to Favourites</button></li>
       </ul>
       <p v-else>No characters</p>
+      <h2>Favourite Characters</h2>
+      <p v-if="favouriteList.length === 0">No favourite Character</p>
+      <ul v-else>
+        <li v-for="character in favouriteList">{{ character }}</li>
+      </ul>
     </div>
   </body>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -32,7 +39,20 @@
           characters: ["Thomas Shelby", "Arthur Shelby", "Aunt Poly", "Finn shelby"],
           numberOfSeasons: 6,
           firstAired: 2014,
-          stillRunning: false
+          stillRunning: false,
+          favouriteList: [],
+          newCharacter: undefined,
+        }
+      },
+      methods:{
+        addToFavouriteList(character){
+          if (this.favouriteList.includes(character)){
+            return
+          }
+          this.favouriteList.push(character)
+        },
+        addCharacter(){
+          this.characters.push(this.newCharacter)
         }
       }
     })
