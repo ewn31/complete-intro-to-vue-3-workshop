@@ -13,17 +13,16 @@
       <h2>Synopsis</h2>
       <p>{{ synopsis }}</p>
       <p><b>Genre: </b> <span v-for="topic in genre"> <i>{{ topic + " " }}</i> </span> </p>
-      <h2>Characters</h2>
-      <input type="text" v-model="newCharacter">
-      <button v-on:click="addCharacter()">Add Character</button>
+      <h2>Characters ({{ numberOfCharacters }})</h2>`
+      <input type="text" v-model="newCharacter.name" @keyup.enter="addCharacter()">
       <ul v-if="characters.length > 0">
-        <li v-for="character in characters">{{ character }} <button @click="addToFavouriteList(character)">Add to Favourites</button></li>
+        <li v-for="character in characters">{{ character.name }} <button @click="addToFavouriteList(character)">Add to Favourites</button></li>
       </ul>
       <p v-else>No characters</p>
       <h2>Favourite Characters</h2>
       <p v-if="favouriteList.length === 0">No favourite Character</p>
       <ul v-else>
-        <li v-for="character in favouriteList">{{ character }}</li>
+        <li v-for="character in favouriteList">{{ character.name }}</li>
       </ul>
     </div>
   </body>
@@ -36,12 +35,17 @@
           showTitle: "Peaky Blinders",
           synopsis: "A crime drama about a Birmingham family gang known as the Peaky Blinders. The show takes place in England from 1919 to 1930's before the start of the second world war ",
           genre: ['crime', 'drama', 'action'],
-          characters: ["Thomas Shelby", "Arthur Shelby", "Aunt Poly", "Finn shelby"],
+          characters: [{name: "Thomas Shelby", dob:"01-22-1979"},{name:"Aunt Poly", dob:"01-22-1966"},{name:"Arthur Shelby", dob:"01-22-1977"}],
           numberOfSeasons: 6,
           firstAired: 2014,
           stillRunning: false,
           favouriteList: [],
-          newCharacter: undefined,
+          newCharacter: {name: undefined}
+        }
+      },
+      computed:{
+        numberOfCharacters(){
+          return this.characters.length
         }
       },
       methods:{
